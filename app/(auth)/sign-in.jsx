@@ -9,11 +9,11 @@ import { getCurrentUser, signIn } from "../../lib/appwriteConfig";
 import { useGlobalContext } from "../../context/GlobalProvider";
 const SignIn = () => {
   const { setUser, setIsLoggedIn } = useGlobalContext();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const handleOnSubmit = async () => {
     if (form.email === "" || form.password === "") {
       Alert.alert("Error", "Please fill all fields");
@@ -23,6 +23,8 @@ const SignIn = () => {
       await signIn(form.email, form.password);
       const result = await getCurrentUser();
       setUser(result);
+      console.log("lOG DATA", result);
+
       setIsLoggedIn(true);
       Alert.alert("Success", "User signed in successfully");
       router.replace("/home");
