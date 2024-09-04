@@ -12,13 +12,15 @@ import { images } from "../../constants";
 import SearchInput from "../../components/SearchInput";
 import Trending from "../../components/Trending";
 import EmptyState from "../../components/EmptyState";
-import { getVideoDetail } from "../../lib/appwriteConfig";
+import { getLatestPosts, getVideoDetail } from "../../lib/appwriteConfig";
 import useAppwrite from "../../lib/UseAppwrite";
 import VideoCards from "../../components/VideoCards";
+import { StatusBar } from "expo-status-bar";
 
 const Home = () => {
   const [refreshing, setRefreshing] = useState(false);
   const { data: posts, refetch } = useAppwrite(getVideoDetail);
+  const { data: latestPosts } = useAppwrite(getLatestPosts);
   const onRefresh = async () => {
     setRefreshing(true);
     await refetch();
@@ -56,7 +58,7 @@ const Home = () => {
                 <Text className="text-gray-100 text-lg font-pregular mb-3">
                   Latest videos
                 </Text>
-                <Trending posts={[] ?? []} />
+                <Trending posts={latestPosts ?? []} />
               </View>
             </View>
           );
@@ -71,6 +73,7 @@ const Home = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       />
+      <StatusBar backgroundColor="#161622" style="light" />
     </SafeAreaView>
   );
 };
