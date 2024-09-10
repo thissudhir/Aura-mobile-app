@@ -16,8 +16,10 @@ import { getLatestPosts, getVideoDetail } from "../../lib/appwriteConfig";
 import useAppwrite from "../../lib/UseAppwrite";
 import VideoCards from "../../components/VideoCards";
 import { StatusBar } from "expo-status-bar";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const Home = () => {
+  const { user, setUser, setIsLoggedIn } = useGlobalContext();
   const [refreshing, setRefreshing] = useState(false);
   const { data: posts, refetch } = useAppwrite(getVideoDetail);
   const { data: latestPosts } = useAppwrite(getLatestPosts);
@@ -39,10 +41,10 @@ const Home = () => {
               <View className="justify-between items-start flex-row mb-6">
                 <View>
                   <Text className="font-pmedium text-sm text-gray-100">
-                    Welcome back
+                    Welcome back,
                   </Text>
                   <Text className="text-2xl font-psemibold text-white">
-                    Gareeb
+                    {user?.username}
                   </Text>
                 </View>
                 <View className="mt-1.5">
